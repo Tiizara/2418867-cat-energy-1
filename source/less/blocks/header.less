@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+  justify-content: space-between;
+  position: relative;
+
+  @media (min-width: @desktop-width) {
+    margin-top: 55px;
+  }
+}
+
+.header__div {
+  display: flex;
+  gap: 19px;
+  align-items: center;
+
+  @media (min-width: @tablet-width) {
+    gap: 13px;
+  }
+}

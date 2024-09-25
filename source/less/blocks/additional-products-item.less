@@ -1,0 +1,117 @@
+.additional-products-item {
+  position: relative;
+  padding-top: 13px;
+  padding-bottom: 19px;
+  border-top: 1px solid #cdcdcd;
+
+  &:last-child {
+    border-bottom: 1px solid #cdcdcd;
+  }
+
+  @media (min-width: @tablet-width) {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 13px 38px 19px 38px;
+    border: 1px solid #cdcdcd;
+  }
+
+  @media (min-width: @desktop-width) {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 15px 0 17px 0;
+    width: 894px;
+    border: none;
+    border-top: 1px solid #cdcdcd;
+  }
+}
+
+.additional-products-item__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  margin: 0;
+  margin-right: auto;
+
+  @media (min-width: @tablet-width) {
+    font-size: 20px;
+    line-height: 20px;
+  }
+
+  @media (min-width: @desktop-width) {
+    margin-right: auto;
+  }
+}
+
+.additional-products-item__div {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+
+  @media (min-width: @tablet-width) {
+    gap: 49px;
+  }
+
+  @media (min-width: @desktop-width) {
+    gap: 112px;
+  }
+}
+
+.additional-products-item__text {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+  color: #444444;
+
+  @media (min-width: @tablet-width) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  @media (min-width: @desktop-width) {
+    margin: 0;
+  }
+}
+
+.additional-products-item__price {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px;
+  color: #444444;
+
+  @media (min-width: @tablet-width) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  @media (min-width: @desktop-width) {
+    margin: 0;
+  }
+}
+
+.additional-products-item__additional-button {
+  display: grid;
+  justify-content: center;
+  font-family: "Oswald", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #ffffff;
+  background-color: #68b738;
+  text-decoration: none;
+  padding: 10px 0;
+  text-transform: uppercase;
+  width: 100%;
+
+  @media (min-width: @desktop-width) {
+    width: 244px;
+    margin-left: 40px;
+    height: 40px;
+  }
+}

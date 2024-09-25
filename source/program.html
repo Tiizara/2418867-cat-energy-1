@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="page" lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <title>Проект сайта "Кэт Энерджи"</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="preload" href="fonts/lato/Lato-Regular.woff2" type="font/woff2" as="font" crossorigin="anonymous">
+    <link rel="preload" href="fonts/oswald/oswaldregular.woff2" type="font/woff2" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="favicons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="favicons/180.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <script src="scripts/index.js" defer></script>
+  </head>
+  <body class="page__body body">
+    <header class="page-header page-header--inner-page" data-test="header">
+      <div class="page-header__content-wrapper content-wrapper">
+        <a class="page-header__logo-site logo-site" href="index.html">
+          <picture>
+            <source media="(min-width: 1320px)" width="202" height="59" type="image/svg+xml" srcset="images/logos/logo-cat-energy-big.svg">
+            <source media="(min-width: 768px)" width="174" height="50" type="image/svg+xml" srcset="images/logos/logo-cat-energy-medium.svg">
+            <img class="logo-site__image" src="images/logos/logo-cat-energy-small.svg" width="190" height="38" alt="Логотип сайта Cat Energy">
+          </picture>
+        </a>
+        <nav class="page-header__main-nav main-nav hamburger-menu" aria-label="Главное меню">
+          <button class="main-nav__hamburger-button hamburger-menu__toogle hamburger-menu__toogle--close hamburger-menu__toogle--no-js" type="button"><span class="visually-hidden">Открыть меню</span></button>
+          <ul class="page-header__main-menu main-menu hamburger-menu__list hamburger-menu__list--open hamburger-menu__list--no-js">
+            <li class="main-menu__item">
+              <a class="main-menu__link main-menu__link--inner-page" href="index.html">главная</a>
+            </li>
+            <li class="main-menu__item">
+              <a class="main-menu__link main-menu__link--inner-page" href="catalog.html">каталог продукции</a>
+            </li>
+            <li class="main-menu__item">
+              <a class="main-menu__link main-menu__link--inner-page main-menu__link--current" href="#"  aria-current="page">подбор программы</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="page-program">
+      <div class="page-program__content-wrapper content-wrapper">
+        <h1 class="page-program__title title title--main">Подбор программы</h1>
+        <p class="page-program__description">Заполните анкету, и мы подберем<br> программу питания для вашего кота</p>
+        <form class="page-program__form form" name="form-program" action="https://echo.htmlacademy.ru/" method="post">
+          <fieldset class="form__fieldset form__fieldset--bio" name="bio">
+            <legend class="visually-hidden">Основные данные котика</legend>
+            <ul class="form__list-field form__list-field--bio">
+              <li class="form__elem-field">
+                <label class="form__label" for="name-id">ИМЯ:*</label>
+                <input class="form__input-field" type="text" id="name-id" name="name" placeholder="барсик" required>
+              </li>
+              <li class="form__elem-field">
+                <label class="form__label" for="weight-id">Вес (кг):*</label>
+                <input class="form__input-field form__input-field--number" type="number" id="weight-id" name="weight" placeholder="7" required>
+              </li>
+              <li class="form__elem-field">
+                <label class="form__label" for="age-id">Возраст (лет):</label>
+                <input class="form__input-field form__input-field--number" type="number" id="age-id" name="age" placeholder="7">
+              </li>
+            </ul>
+          </fieldset>
+          <fieldset class="form__fieldset form__fieldset--target-program form__fieldset--border" name="target">
+            <legend class="visually-hidden">Цель программы</legend>
+            <ul class="form__list-field form__list-field--target-program">
+              <li class="form__elem-field">
+                <input class="form__input-radio visually-hidden" type="radio" id="weight-loss-id" name="target" value="weight-loss" checked>
+                <label class="form__label form__label--radio" for="weight-loss-id">похудение</label>
+              </li>
+              <li class="form__elem-field">
+                <input class="form__input-radio visually-hidden" type="radio" id="weight-gain-id" name="target" value="weight-gain">
+                <label class="form__label form__label--radio" for="weight-gain-id">Набор массы</label>
+              </li>
+              <li class="form__elem-field">
+                <input class="form__input-radio visually-hidden" type="radio" id="advice-id" name="target" value="advice">
+                <label class="form__label form__label--radio" for="advice-id">Не знаю (Нужен ваш совет)</label>
+              </li>
+            </ul>
+          </fieldset>
+          <fieldset class="form__fieldset form__fieldset--contacts" name="contacts">
+            <legend class="form__title form__title--contacts title title--medium-form title--line-left-right">Контактные&nbsp;данные (владельца&nbsp;кота)</legend>
+            <ul class="form__list-field form__list-field--contacts">
+              <li class="form__elem-field">
+                <label class="form__label" for="email-id">E-mail:*</label>
+                <div class="form__input-field-wrapper">
+                  <input class="form__input-field form__input-field--email" type="email" id="email-id" name="email" placeholder="kuklachev@gmail.com" required>
+                  <span class="form__input-field-icon form__input-field-icon--email"></span>
+                </div>
+              </li>
+              <li class="form__elem-field">
+                <label class="form__label" for="phone-id">Телефон:*</label>
+                <div class="form__input-field-wrapper">
+                  <input class="form__input-field form__input-field--number form__input-field--phone" type="number" id="phone-id" name="phone" placeholder="8 (960) 900-60-90" required>
+                  <span class="form__input-field-icon form__input-field-icon--phone"></span>
+                </div>
+              </li>
+            </ul>
+          </fieldset>
+          <fieldset class="form__fieldset form__fieldset--comment" name="comment">
+            <legend class="form__title form__title--comment title title--medium-form title--line-left-right">Комментарий</legend>
+            <textarea class="form__input-field form__input-field--textarea" name="comment-input" cols="30" rows="7" placeholder="Расскажите обо всех повадках кота"></textarea>
+          </fieldset>
+          <fieldset class="form__fieldset form__fieldset--additionally" name="additionally">
+            <legend class="form__title form__title--additionally title title--medium-form title--line-left-right">Дополнительно</legend>
+            <ul class="form__list-field form__list-field--additionally">
+              <li class="form__elem-field">
+                <input class="form__input-checkbox visually-hidden" type="checkbox" id="product-1-id" name="product-1" checked>
+                <label class="form__label form__label--checkbox title title--small-form" for="product-1-id">сахарозаменитель</label>
+              </li>
+              <li class="form__elem-field">
+                <input class="form__input-checkbox visually-hidden" type="checkbox" id="product-2-id" name="product-2">
+                <label class="form__label form__label--checkbox title title--small-form" for="product-2-id">питьевая вода</label>
+              </li>
+              <li class="form__elem-field">
+                <input class="form__input-checkbox visually-hidden" type="checkbox" id="product-3-id" name="product-3">
+                <label class="form__label form__label--checkbox title title--small-form" for="product-3-id">молоко</label>
+              </li>
+              <li class="form__elem-field">
+                <input class="form__input-checkbox visually-hidden" type="checkbox" id="product-4-id" name="product-4">
+                <label class="form__label form__label--checkbox title title--small-form" for="product-4-id">витамины</label>
+              </li>
+            </ul>
+          </fieldset>
+          <div class="form__button-wrapper">
+            <button class="form__button button button--primary" type="submit">отправить заявку</button>
+            <p class="form__footnote">* — Обязательные поля</p>
+          </div>
+        </form>
+      </div>
+    </main>
+    <footer class="page-footer">
+      <section class="page-footer__contacts-section contacts-section" data-test="contacts">
+        <div class="contacts-section__wrapper-text contacts-section__wrapper-text--inner-page content-wrapper">
+          <h2 class="visually-hidden">Контактная информация</h2>
+          <p class="contacts-section__slogan">
+            приглашаем к&nbsp;сотрудничеству дилеров!
+          </p>
+          <address class="contacts-section__address">
+            ул.&nbsp;Большая Конюшенная,&nbsp;д.&nbsp;19/8
+            <span class="contacts-section__city">Санкт-Петербург</span>
+          </address>
+        </div>
+        <div class="contacts-section__wrapper-map">
+          <div class="contacts-section__wrapper-map-interactive contacts-section__wrapper-map-interactive--no-js">
+            <iframe class="contacts-section__map-interactive" src="https://yandex.ru/map-widget/v1/?um=constructor%3A4f4d75317c4feee721388542421a7ef2ab884ca936502e9de9c80456c1ccc30a&amp;source=constructor" height="362"></iframe>
+          </div>
+          <picture>
+            <source media="(min-width: 1320px)" width="1440" height="400" type="image/webp" srcset="images/map-desktop@1x.webp, images/map-desktop@2x.webp 2x">
+            <source media="(min-width: 768px)" width="768" height="400" type="image/webp" srcset="images/map-tablet@1x.webp, images/map-tablet@2x.webp 2x">
+            <source width="320" height="362" type="image/webp" srcset="images/map-mobile@1x.webp, images/map-mobile@2x.webp 2x">
+            <source media="(min-width: 1320px)" width="1440" height="400" type="image/jpeg" srcset="images/map-desktop@1x.jpg 1x, images/map-desktop@2x.jpg 2x">
+            <source media="(min-width: 768px)" width="768" height="400" type="image/jpeg" srcset="images/map-tablet@1x.jpg 1x, images/map-tablet@2x.jpg 2x">
+            <img class="contacts-section__image-map" src="images/map-mobile@1x.jpg" srcset="images/map-mobile@2x.jpg 2x" width="320" height="362" alt="Карта проезда">
+          </picture>
+        </div>
+      </section>
+      <div class="page-footer__wrapper" data-test="footer">
+        <div class="page-footer__content-wrapper content-wrapper">
+          <a class="page-footer__logo-site logo-site" href="index.html">
+            <img class="logo-site__image" src="images/logos/logo-cat-energy-mini.svg" width="128" height="24" alt="Логотип сайта Cat Energy">
+          </a>
+          <ul class="page-footer__list-social list-social">
+            <li class="list-social__item">
+              <a class="list-social__link list-social__link--vk" href="#">
+                <span class="visually-hidden">перейти во Вконтакте</span>
+              </a>
+            </li>
+            <li class="list-social__item">
+              <a class="list-social__link list-social__link--youtube" href="#">
+                <span class="visually-hidden">перейти в Youtube</span>
+              </a>
+            </li>
+            <li class="list-social__item">
+              <a class="list-social__link list-social__link--telegram" href="#">
+                <span class="visually-hidden">перейти в Телеграм</span>
+              </a>
+            </li>
+          </ul>
+          <a class="page-footer__copyright" href="https://htmlacademy.ru/intensive/adaptive">
+            HTML Academy
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

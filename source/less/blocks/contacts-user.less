@@ -1,0 +1,46 @@
+.contacts-user {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contacts-user__title {
+  position: relative;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  margin-top: 26px;
+  margin-bottom: 35px;
+
+  @media (min-width: @tablet-width) {
+    font-size: 36px;
+    line-height: 36px;
+    margin-bottom: 76px;
+    margin-top: 65px;
+  }
+
+  @media (min-width: @tablet-width) {
+    margin-top: 70px;
+  }
+
+  &::after {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 28%;
+    left: 109%;
+    width: 1400px;
+    height: 2px;
+    background-color: #68b738;
+  }
+}
+
+.contacts-user__form-text {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}

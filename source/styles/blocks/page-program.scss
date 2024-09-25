@@ -1,0 +1,48 @@
+.page-program {
+  padding-top: 3px;
+
+  @media (min-width: $viewport-medium) {
+    padding-top: 14px;
+  }
+
+  @media (min-width: $viewport-big) {
+    padding-top: 24px;
+  }
+}
+
+.page-program__content-wrapper {
+  @media (min-width: $viewport-medium) {
+    padding: 0 calc($page-padding-medium + 40px);
+  }
+
+  @media (min-width: $viewport-big) {
+    padding: 0 $page-padding-big;
+  }
+}
+
+.page-program__title {
+  margin-bottom: 37px;
+
+  @media (min-width: $viewport-medium) {
+    margin-bottom: 54px;
+  }
+
+  @media (min-width: $viewport-big) {
+    margin-bottom: 55px;
+  }
+}
+
+.page-program__description {
+  margin-bottom: 39px;
+  font-family: $ff-accent;
+  font-size: 14px;
+  line-height: 18px;
+  color: $fc-dark;
+  text-transform: uppercase;
+
+  @media (min-width: $viewport-medium) {
+    margin-bottom: 66px;
+    font-size: 20px;
+    line-height: 30px;
+  }
+}

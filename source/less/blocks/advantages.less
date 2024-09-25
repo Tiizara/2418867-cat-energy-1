@@ -1,0 +1,127 @@
+.advantages {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  gap: 20px;
+
+  @media (min-width: @desktop-width) {
+    display: flex;
+    flex-direction: revert;
+    gap: 80px;
+    margin-top: 82px;
+    margin-bottom: 71px;
+  }
+}
+
+.advantages__item {
+  display: grid;
+  grid-template-columns: 55px 110px auto;
+  padding: 30px 20px;
+  background-color: #f2f2f2;
+
+  @media (min-width: @tablet-width) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: @desktop-width) {
+    grid-template-columns: 100px 286px;
+    padding: 41px 52px 55px 52px;
+    grid-template-rows: 106px auto auto;
+    width: 570px;
+  }
+}
+
+.advantages__item-img {
+  @media (min-width: @tablet-width) {
+    display: block;
+    grid-column: 2/3;
+    grid-row: 1/4;
+    align-self: center;
+    justify-self: center;
+    padding: 0;
+  }
+
+  @media (min-width: @desktop-width) {
+    grid-column: 1/2;
+  }
+}
+
+.advatages__title {
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 37px;
+  color: #000000;
+  text-transform: uppercase;
+  margin: 0 0 0 20px;
+  align-self: center;
+  grid-column: 2/4;
+
+  @media (min-width: @tablet-width) {
+    grid-column: 1/2;
+    margin: 0;
+    font-size: 36px;
+    line-height: 36px;
+  }
+
+  @media (min-width: @desktop-width) {
+    grid-column: 2/3;
+    margin-left: 62px;
+  }
+}
+
+.advantages__text {
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #00000080;
+  grid-column: 1/4;
+  margin-bottom: 52px;
+
+  @media (min-width: @tablet-width) {
+    grid-column: 1/2;
+    margin: 24px 0 48px 0;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+  }
+
+  @media (min-width: @desktop-width) {
+    grid-column: 1/3;
+    margin: 23px 0;
+    width: 457px;
+  }
+}
+
+.advantages__link {
+  position: relative;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #000000;
+  grid-column: 1/3;
+
+  justify-self: flex-start;
+
+  &::after {
+    content: "";
+    position: absolute;
+    background-image: url("../img/images/arrow.svg");
+    top: 50%;
+    left: 100%;
+    width: 24px;
+    height: 12px;
+    transform: translate(5px, -50%);
+    background-size: 24px 12px;
+  }
+
+  @media (min-width: @tablet-width) {
+    font-size: 20px;
+    line-height: 29.64px;
+  }
+}

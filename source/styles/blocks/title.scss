@@ -1,0 +1,138 @@
+.title {
+  position: relative;
+  font-family: $ff-accent;
+  font-weight: 400;
+  color: $fc-dark;
+
+  &--main {
+    font-size: 36px;
+    line-height: 36px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 60px;
+      line-height: 60px;
+    }
+  }
+
+  &--big {
+    font-size: 36px;
+    line-height: 40px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 60px;
+      line-height: 60px;
+    }
+  }
+
+  &--medium {
+    font-size: 24px;
+    line-height: 37px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 36px;
+      line-height: 36px;
+    }
+  }
+
+  &--medium-inner-page {
+    font-size: 24px;
+    line-height: 24px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 32px;
+      line-height: 32px;
+    }
+
+    @media (min-width: $viewport-big) {
+      font-size: 40px;
+      line-height: 40px;
+    }
+  }
+
+  &--medium-form {
+    font-size: 24px;
+    line-height: 26px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 36px;
+      line-height: 36px;
+    }
+  }
+
+  &--small {
+    font-size: 16px;
+    line-height: 20px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 20px;
+      line-height: 24px;
+    }
+  }
+
+  &--small-subtitle {
+    font-size: 16px;
+    line-height: 16px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 20px;
+      line-height: 20px;
+    }
+  }
+
+  &--small-form {
+    font-size: 16px;
+    line-height: 18px;
+
+    @media (min-width: $viewport-medium) {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+
+  &--line-left-right {
+    margin-left: calc($page-padding-small * -1);
+    padding-left: $page-padding-small;
+    padding-right: calc($page-padding-small + 20px);
+
+    @media (min-width: $viewport-medium) {
+      margin-left: 0;
+      padding-left: calc($page-padding-medium + 10px);
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-left: calc(($page-padding-big - 10px) * -1);
+    }
+  }
+
+  &--line-left-right::before,
+  &--line-left-right::after {
+    position: absolute;
+    right: 0;
+    z-index: -1;
+    display: block;
+    content: "";
+  }
+
+  &--line-left-right::before {
+    top: 10px;
+    height: 2px;
+    width: 100vw;
+    background-color: $bg-color-bright-basic;
+    box-shadow: 100vw 0 0 $bg-color-bright-basic;
+
+    @media (min-width: $viewport-medium) {
+      top: 14px;
+    }
+
+    @media (min-width: $viewport-big) {
+      top: 18px;
+    }
+  }
+
+  &--line-left-right::after {
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: $bg-color-primary;
+  }
+}

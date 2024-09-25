@@ -1,165 +1,208 @@
+import { readFileSync, rmSync } from 'node:fs';
+
 import gulp from 'gulp';
 import plumber from 'gulp-plumber';
-import sass from 'gulp-dart-sass';
-import postcss from 'gulp-postcss';
-import csso from 'postcss-csso';
-import rename from 'gulp-rename';
-import autoprefixer from 'autoprefixer';
-import browser from 'browser-sync';
 import htmlmin from 'gulp-htmlmin';
-import terser from 'gulp-terser';
-import squoosh from 'gulp-libsquoosh';
-import { deleteAsync } from 'del';
+import * as dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+import postcss from 'gulp-postcss';
+import postUrl from 'postcss-url';
+import lightningcss from 'postcss-lightningcss';
+import { createGulpEsbuild } from 'gulp-esbuild';
+import browserslistToEsbuild from 'browserslist-to-esbuild';
+import sharp from 'gulp-sharp-responsive';
 import svgo from 'gulp-svgmin';
-import svgstore from 'gulp-svgstore';
+import { stacksvg } from 'gulp-stacksvg';
+import server from 'browser-sync';
+import bemlinter from 'gulp-html-bemlinter';
 
+const { src, dest, watch, series, parallel } = gulp;
+const sass = gulpSass(dartSass);
+const PATH_TO_SOURCE = './source/';
+const PATH_TO_DIST = './build/';
+const PATH_TO_RAW = './raw/';
+const PATHS_TO_STATIC = [
+  `${PATH_TO_SOURCE}fonts/**/*.{woff2,woff}`,
+  `${PATH_TO_SOURCE}*.ico`,
+  `${PATH_TO_SOURCE}*.webmanifest`,
+  `${PATH_TO_SOURCE}favicons/**/*.{png,svg}`,
+  `${PATH_TO_SOURCE}vendor/**/*`,
+  `${PATH_TO_SOURCE}images/**/*`,
+  `!${PATH_TO_SOURCE}**/README.md`,
+];
+let isDevelopment = true;
 
+export function processMarkup () {
+  return src(`${PATH_TO_SOURCE}**/*.html`)
+    .pipe(htmlmin({ collapseWhitespace: !isDevelopment }))
+    .pipe(dest(PATH_TO_DIST))
+    .pipe(server.stream());
+}
 
-// Styles
+export function lintBem () {
+  return src(`${PATH_TO_SOURCE}**/*.html`)
+    .pipe(bemlinter());
+}
 
-export const styles = () => {
-  return gulp.src('source/sass/style.scss', { sourcemaps: true })
+export function processStyles () {
+  return src(`${PATH_TO_SOURCE}styles/*.scss`, { sourcemaps: isDevelopment })
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
     .pipe(postcss([
-      autoprefixer(),
-      csso()
+      postUrl([
+        {
+          filter: '**/*',
+          assetsPath: '../',
+        },
+        {
+          filter: '**/icons/**/*.svg',
+          url: (asset) => asset.url.replace(
+            /icons\/(.+?)\.svg$/,
+            (match, p1) => `icons/stack.svg#${p1.replace(/\//g, '_')}`
+          ),
+          multi: true,
+        },
+      ]),
+      lightningcss({
+        lightningcssOptions: {
+          minify: !isDevelopment,
+        },
+      })
     ]))
-    .pipe(rename('style.min.css'))
-    .pipe(gulp.dest('build/css', { sourcemaps: '.' }))
-    .pipe(browser.stream());
+    .pipe(dest(`${PATH_TO_DIST}styles`, { sourcemaps: isDevelopment }))
+    .pipe(server.stream());
 }
 
-//HTML
-const html = () => {
-  return gulp.src('source/*.html')
-    .pipe(htmlmin({ collapseWhitespace: true }))
-    .pipe(gulp.dest('build'));
-}
+export function processScripts () {
+  const gulpEsbuild = createGulpEsbuild({ incremental: isDevelopment });
 
-// Scripts
-const script = () => {
-  return gulp.src('source/js/*.js')
-    .pipe(terser())
-    .pipe(gulp.dest('build/js'))
-}
-
-//Images
-const images = () => {
-  return gulp.src('source/img/**/*.{png,jpg}')
-    .pipe(squoosh())
-    .pipe(gulp.dest('build/img'))
-}
-
-const copyImages = () => {
-  return gulp.src('source/img/**/*.{png,jpg}')
-    .pipe(gulp.dest('build/img'))
-}
-
-//webp
-const createWebp = () => {
-  return gulp.src('source/img/**/*.{png,jpg}')
-    .pipe(squoosh({
-      webp: {}
+  return src(`${PATH_TO_SOURCE}scripts/*.js`)
+    .pipe(gulpEsbuild({
+      bundle: true,
+      format: 'esm',
+      // splitting: true,
+      platform: 'browser',
+      minify: !isDevelopment,
+      sourcemap: isDevelopment,
+      target: browserslistToEsbuild(),
     }))
-    .pipe(gulp.dest('build/img'))
+    .pipe(dest(`${PATH_TO_DIST}scripts`))
+    .pipe(server.stream());
 }
 
-//SVG
-const svg = () =>
-  gulp.src(['source/img/**/*.svg', '!source/img/icons-sprite/*.svg'])
+export function optimizeRaster () {
+  const RAW_DENSITY = 2;
+  const TARGET_FORMATS = [undefined, 'webp']; // undefined — initial format: jpg or png
+
+  function createOptionsFormat() {
+    const formats = [];
+
+    for (const format of TARGET_FORMATS) {
+      for (let density = RAW_DENSITY; density > 0; density--) {
+        formats.push(
+          {
+            format,
+            rename: { suffix: `@${density}x` },
+            width: ({ width }) => Math.ceil(width * density / RAW_DENSITY),
+            jpegOptions: { progressive: true },
+          },
+        );
+      }
+    }
+
+    return { formats };
+  }
+
+  return src(`${PATH_TO_RAW}images/**/*.{png,jpg,jpeg}`)
+    .pipe(sharp(createOptionsFormat()))
+    .pipe(dest(`${PATH_TO_SOURCE}images`));
+}
+
+export function optimizeVector () {
+  return src([`${PATH_TO_RAW}**/*.svg`])
     .pipe(svgo())
-    .pipe(gulp.dest('build/img'));
-
-const sprite = () => {
-  return gulp.src(['source/img/icons-sprite/*.svg'])
-    .pipe(svgo())
-    .pipe(svgstore({
-      inlineSvg: true
-    }))
-    .pipe(rename('sprite.svg'))
-    .pipe(gulp.dest('build/img'));
+    .pipe(dest(PATH_TO_SOURCE));
 }
 
-
-//Copy
-const copy = (done) => {
-  gulp.src([
-    'source/fonts/**/*.{woff2,woff}',
-    'source/*.ico',
-    'source/*.webmanifest'
-  ], {
-    base: 'source'
-  })
-    .pipe(gulp.dest('build'))
-  done();
+export function createStack () {
+  return src(`${PATH_TO_SOURCE}icons/**/*.svg`)
+    .pipe(stacksvg())
+    .pipe(dest(`${PATH_TO_DIST}icons`));
 }
 
-//clean
-const clean = () => {
-  return deleteAsync('build')
-};
+export function copyStatic () {
+  return src(PATHS_TO_STATIC, { base: PATH_TO_SOURCE })
+    .pipe(dest(PATH_TO_DIST));
+}
 
-// Server
+export function startServer () {
+  const serveStatic = PATHS_TO_STATIC
+    .filter((path) => path.startsWith('!') === false)
+    .map((path) => {
+      const dir = path.replace(/(\/\*\*\/.*$)|\/$/, '');
+      const route = dir.replace(PATH_TO_SOURCE, '/');
 
-const server = (done) => {
-  browser.init({
+      return { route, dir };
+    });
+
+  server.init({
     server: {
-      baseDir: 'build'
+      baseDir: PATH_TO_DIST
     },
+    serveStatic,
     cors: true,
     notify: false,
     ui: false,
+  }, (err, bs) => {
+    bs.addMiddleware('*', (req, res) => {
+      res.write(readFileSync(`${PATH_TO_DIST}404.html`));
+      res.end();
+    });
+  });
+
+  watch(`${PATH_TO_SOURCE}**/*.{html,njk}`, series(processMarkup));
+  watch(`${PATH_TO_SOURCE}styles/**/*.scss`, series(processStyles));
+  watch(`${PATH_TO_SOURCE}scripts/**/*.js`, series(processScripts));
+  watch(`${PATH_TO_SOURCE}icons/**/*.svg`, series(createStack, reloadServer));
+  watch(PATHS_TO_STATIC, series(reloadServer));
+}
+
+function reloadServer (done) {
+  server.reload();
+  done();
+}
+
+export function removeBuild (done) {
+  rmSync(PATH_TO_DIST, {
+    force: true,
+    recursive: true,
   });
   done();
 }
 
-// Reload
-
-const reload = (done) => {
-  browser.reload();
-  done();
+export function buildProd (done) {
+  isDevelopment = false;
+  series(
+    removeBuild,
+    parallel(
+      processMarkup,
+      processStyles,
+      processScripts,
+      createStack,
+      copyStatic,
+    ),
+  )(done);
 }
 
-// Watcher
-
-const watcher = () => {
-  gulp.watch('source/sass/**/*.scss', gulp.series(styles));
-  gulp.watch('source/js/**/*.js', gulp.series(script));
-  gulp.watch('source/*.html', gulp.series(html, reload));
+export function runDev (done) {
+  series(
+    removeBuild,
+    parallel(
+      processMarkup,
+      processStyles,
+      processScripts,
+      createStack,
+    ),
+    startServer,
+  )(done);
 }
-
-// Build
-
-export const build = gulp.series(
-  clean,
-  copy,
-  images,
-  gulp.parallel(
-    styles,
-    html,
-    script,
-    svg,
-    sprite,
-    createWebp
-  ),
-);
-
-// Default
-
-export default gulp.series(
-  clean,
-  copy,
-  copyImages,
-  gulp.parallel(
-    styles,
-    html,
-    script,
-    svg,
-    sprite,
-    createWebp
-  ),
-  gulp.series(
-    server,
-    watcher
-  ));

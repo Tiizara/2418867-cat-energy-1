@@ -1,0 +1,456 @@
+.form {
+  display: grid;
+  column-gap: 40px;
+  font-family: $ff-accent;
+  font-size: 16px;
+  text-transform: uppercase;
+
+  @media (min-width: $viewport-medium) {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  @media (min-width: $viewport-big) {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 80px;
+  }
+}
+
+.form__fieldset {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0;
+  border: none;
+
+  &--bio {
+    grid-column: auto;
+    margin-bottom: 22px;
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 72px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 70px;
+    }
+  }
+
+  &--target-program {
+    grid-column: auto;
+    padding-top: 22px;
+    padding-bottom: 18px;
+    margin-bottom: 26px;
+
+    @media (min-width: $viewport-medium) {
+      padding: 23px 27px 25px;
+      margin-bottom: 65px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 70px;
+    }
+  }
+
+  &--contacts {
+    margin-bottom: 24px;
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 65px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 70px;
+    }
+  }
+
+  &--comment {
+    margin-bottom: 21px;
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 59px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 64px;
+    }
+  }
+
+  &--additionally {
+    margin-bottom: 35px;
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 52px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 60px;
+    }
+  }
+
+  &--border {
+    @media (width < $viewport-medium) {
+      margin: {
+        left: $page-padding-small * -1;
+        right: $page-padding-small * -1;
+      }
+
+      padding: {
+        left: $page-padding-small;
+        right: $page-padding-small;
+      }
+
+      border: {
+        top: 1px solid #d9d9d9;
+        bottom: 1px solid #d9d9d9;
+      }
+    }
+
+    @media (min-width: $viewport-medium) {
+      border: 1px solid #d9d9d9;
+    }
+  }
+}
+
+.form__list-field {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  &--bio {
+    gap: 13px;
+
+    @media (min-width: $viewport-medium) {
+      gap: 20px;
+    }
+  }
+
+  &--target-program {
+    gap: 13px;
+  }
+
+  &--contacts {
+    gap: 13px;
+
+    @media (min-width: $viewport-medium) {
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 20px;
+      column-gap: 40px;
+    }
+
+    @media (min-width: $viewport-big) {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 80px;
+    }
+  }
+
+  &--additionally {
+    gap: 12px;
+
+    @media (min-width: $viewport-medium) {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      column-gap: 60px;
+    }
+
+    @media (min-width: $viewport-big) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      column-gap: 79px;
+    }
+  }
+}
+
+.form__elem-field {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  @media (min-width: $viewport-medium) {
+    gap: 14px;
+  }
+}
+
+.form__label {
+  flex-shrink: 0;
+  max-width: 40%;
+
+  &--radio,
+  &--checkbox {
+    position: relative;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    max-width: 100%;
+
+    @media (min-width: $viewport-medium) {
+      gap: 19px;
+    }
+  }
+
+  &--radio::before,
+  &--checkbox::before {
+    display: block;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    content: "";
+    border: 1px solid $bg-color-special-grey;
+
+    @media (min-width: $viewport-medium) {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &--radio::after,
+  &--checkbox::after {
+    position: absolute;
+    left: 15px;
+    display: block;
+    content: "";
+    background-color: $bg-color-bright-basic;
+    transform: translateX(-50%) scale(0);
+    transition: transform 0.3s;
+
+    @media (min-width: $viewport-medium) {
+      left: 19px;
+    }
+  }
+
+  &--radio::after {
+    width: 13px;
+    height: 13px;
+
+    @media (min-width: $viewport-medium) {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &--checkbox::after {
+    @include icon-mask(url("../../icons/stack.svg#check-mark"), 18px 14px);
+
+    width: 18px;
+    height: 14px;
+
+    @media (min-width: $viewport-medium) {
+      mask-size: 29px 19px;
+      width: 29px;
+      height: 19px;
+    }
+  }
+
+  &--radio::before,
+  &--radio::after {
+    border-radius: 50%;
+  }
+}
+
+// Interactive style radio and checkbox start
+.form__label--radio:hover::before,
+.form__label--checkbox:hover::before {
+  border-color: #bababa;
+}
+
+.form__input-radio:focus ~ .form__label--radio::before,
+.form__input-checkbox:focus ~ .form__label--checkbox::before {
+  border: 2px solid $bg-color-dark;
+}
+
+.form__input-radio:checked ~ .form__label--radio::after,
+.form__input-checkbox:checked ~ .form__label--checkbox::after {
+  transform: translateX(-50%) scale(1);
+}
+
+.form__input-radio:disabled ~ .form__label--radio,
+.form__input-checkbox:disabled ~ .form__label--checkbox {
+  opacity: 0.3;
+}
+// Interactive style radio and checkbox end
+
+.form__title {
+  margin-left: -20px;
+  padding: 0 20px;
+  text-transform: none;
+
+  @media (min-width: $viewport-medium) {
+    margin-left: -40px;
+    padding: 0 40px;
+  }
+
+  @media (min-width: $viewport-big) {
+    padding: 0 40px;
+  }
+
+  &--contacts {
+    margin-bottom: 34px;
+
+    @media (width < $viewport-medium) {
+      max-width: 220px;
+    }
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 76px;
+    }
+  }
+
+  &--comment {
+    margin-bottom: 38px;
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 87px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 78px;
+    }
+  }
+
+  &--additionally {
+    margin-bottom: 34px;
+
+    @media (min-width: $viewport-medium) {
+      margin-bottom: 57px;
+    }
+
+    @media (min-width: $viewport-big) {
+      margin-bottom: 57px;
+    }
+  }
+}
+
+.form__input-field-wrapper {
+  position: relative;
+  min-width: 50%;
+  width: 100%;
+}
+
+.form__input-field-icon {
+  position: absolute;
+  top: 50%;
+  right: 13px;
+  transform: translateY(-50%);
+  z-index: 2;
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: $bg-color-dark;
+  mask-repeat: no-repeat;
+  mask-position: center center;
+
+  &--email {
+    @include icon-mask(url("../../icons/stack.svg#email"), 17px 13px);
+  }
+
+  &--phone {
+    @include icon-mask(url("../../icons/stack.svg#phone"), 15px 15px);
+  }
+}
+
+.form__input-field {
+  min-width: 50%;
+  width: 100%;
+  padding: 14px 48px 12px 15px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  text-transform: inherit;
+  border: 1px solid #e7e7e7;
+  transition: border-color 0.3s;
+
+  @media (min-width: $viewport-medium) {
+    padding: 11px 48px 9px 19px;
+  }
+
+  &--number {
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+    }
+  }
+
+  &--textarea {
+    padding: 14px 14px 8px;
+    resize: none;
+
+    @media (min-width: $viewport-medium) {
+      height: 175px;
+      padding: 11px 19px 12px;
+    }
+
+    @media (min-width: $viewport-big) {
+      padding-top: 9px;
+    }
+  }
+
+  &::placeholder {
+    font-family: $ff-accent;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  &:hover {
+    border-color: $bg-color-special-grey;
+  }
+
+  &:focus {
+    border-color: $fc-grey;
+  }
+
+  &:focus ~ .form__input-field-icon {
+    background-color: $bg-color-bright-basic;
+  }
+
+  &:user-invalid {
+    border-color: #ff8282;
+  }
+
+  &:user-invalid ~ .form__input-field-icon {
+    background-color: #ff8282;
+  }
+}
+
+.form__button-wrapper {
+  display: grid;
+  gap: 21px;
+  text-align: center;
+  margin-bottom: 32px;
+
+  @media (min-width: $viewport-medium) {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+
+  @media (min-width: $viewport-big) {
+    gap: 78px;
+    margin-bottom: 79px;
+  }
+}
+
+.form__button {
+  border: none;
+
+  @media (min-width: $viewport-medium) {
+    font-size: 20px;
+    line-height: 26px;
+    padding: 14px;
+  }
+}
+
+.form__footnote {
+  font-family: $ff-primary;
+  font-size: 14px;
+  line-height: 16px;
+  margin: 0;
+  text-transform: none;
+
+  @media (min-width: $viewport-medium) {
+    font-size: 16px;
+    text-align: left;
+  }
+}

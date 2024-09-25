@@ -1,0 +1,128 @@
+.footer__img-footer-address {
+  position: relative;
+  height: 474px;
+
+  @media (min-width: @tablet-width) {
+    height: 572px;
+  }
+
+  @media (min-width: @desktop-width) {
+    height: 400px;
+  }
+}
+
+.footer__container {
+  z-index: 12;
+  position: relative;
+  padding: 0;
+
+  @media (min-width: @desktop-width) {
+    z-index: 12;
+    position: relative;
+    top: 45px;
+  }
+}
+
+.footer--color {
+  background-color: #f2f2f2;
+
+  @media (min-width: @desktop-width) {
+    background-color: #ffffff;
+  }
+}
+
+.footer__footer-address {
+  display: flex;
+  padding: 26px 20px;
+
+
+  @media (min-width: @tablet-width) {
+    padding: 60px 70px;
+  }
+
+  @media (min-width: @desktop-width) {
+    padding: 60px 74px;
+    background-color: #ffffff;
+    width: 565px;
+    display: flex;
+    gap: 87px;
+  }
+}
+
+.footer__map {
+  position: absolute;
+  width: 100%;
+  height: 362px;
+
+  @media (min-width: @tablet-width) {
+    height: 400px;
+  }
+
+  @media (min-width: @desktop-width) {
+    top: 0%;
+  }
+}
+
+.footer__heading {
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  text-transform: uppercase;
+  margin: 0;
+
+  @media (min-width: @tablet-width) {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}
+
+.footer__text {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #444444;
+  margin-left: 28px;
+
+  @media (min-width: @tablet-width) {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+.footer__div-block {
+  background-color: #f2f2f2;
+}
+
+.footer__div {
+  display: flex;
+  flex-direction: column;
+
+  padding-top: 40px;
+  padding-bottom: 40px;
+  align-items: center;
+
+  @media (min-width: @tablet-width) {
+    flex-direction: revert;
+    justify-content: space-between;
+    padding-top: 55px;
+    padding-bottom: 55px;
+  }
+}
+
+.footer__logo-htmlacademy {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #444444;
+  text-decoration: none;
+  align-self: start;
+}
+
+.footer__img {
+  display: block;
+  width: 100%;
+}
