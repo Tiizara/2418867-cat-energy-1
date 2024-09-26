@@ -1,5 +1,4 @@
 import { readFileSync, rmSync } from 'node:fs';
-
 import gulp from 'gulp';
 import plumber from 'gulp-plumber';
 import htmlmin from 'gulp-htmlmin';
@@ -20,6 +19,7 @@ const { src, dest, watch, series, parallel } = gulp;
 const sass = gulpSass(dartSass);
 const PATH_TO_SOURCE = './source/';
 const PATH_TO_DIST = './build/';
+const PATH_TO_PUBLIC = './public/';
 const PATH_TO_RAW = './raw/';
 const PATHS_TO_STATIC = [
   `${PATH_TO_SOURCE}fonts/**/*.{woff2,woff}`,
@@ -30,21 +30,22 @@ const PATHS_TO_STATIC = [
   `${PATH_TO_SOURCE}images/**/*`,
   `!${PATH_TO_SOURCE}**/README.md`,
 ];
+
 let isDevelopment = true;
 
-export function processMarkup () {
+export function processMarkup() {
   return src(`${PATH_TO_SOURCE}**/*.html`)
     .pipe(htmlmin({ collapseWhitespace: !isDevelopment }))
-    .pipe(dest(PATH_TO_DIST))
+    .pipe(dest(PATH_TO_PUBLIC)) // Изменено: выход в public
     .pipe(server.stream());
 }
 
-export function lintBem () {
+export function lintBem() {
   return src(`${PATH_TO_SOURCE}**/*.html`)
     .pipe(bemlinter());
 }
 
-export function processStyles () {
+export function processStyles() {
   return src(`${PATH_TO_SOURCE}styles/*.scss`, { sourcemaps: isDevelopment })
     .pipe(plumber())
     .pipe(sass().on('error', sass.logError))
@@ -69,30 +70,29 @@ export function processStyles () {
         },
       })
     ]))
-    .pipe(dest(`${PATH_TO_DIST}styles`, { sourcemaps: isDevelopment }))
+    .pipe(dest(`${PATH_TO_PUBLIC}styles`, { sourcemaps: isDevelopment }))
     .pipe(server.stream());
 }
 
-export function processScripts () {
+export function processScripts() {
   const gulpEsbuild = createGulpEsbuild({ incremental: isDevelopment });
 
   return src(`${PATH_TO_SOURCE}scripts/*.js`)
     .pipe(gulpEsbuild({
       bundle: true,
       format: 'esm',
-      // splitting: true,
       platform: 'browser',
       minify: !isDevelopment,
       sourcemap: isDevelopment,
       target: browserslistToEsbuild(),
     }))
-    .pipe(dest(`${PATH_TO_DIST}scripts`))
+    .pipe(dest(`${PATH_TO_PUBLIC}scripts`))
     .pipe(server.stream());
 }
 
-export function optimizeRaster () {
+export function optimizeRaster() {
   const RAW_DENSITY = 2;
-  const TARGET_FORMATS = [undefined, 'webp']; // undefined — initial format: jpg or png
+  const TARGET_FORMATS = [undefined, 'webp'];
 
   function createOptionsFormat() {
     const formats = [];
@@ -118,24 +118,24 @@ export function optimizeRaster () {
     .pipe(dest(`${PATH_TO_SOURCE}images`));
 }
 
-export function optimizeVector () {
+export function optimizeVector() {
   return src([`${PATH_TO_RAW}**/*.svg`])
     .pipe(svgo())
     .pipe(dest(PATH_TO_SOURCE));
 }
 
-export function createStack () {
+export function createStack() {
   return src(`${PATH_TO_SOURCE}icons/**/*.svg`)
     .pipe(stacksvg())
-    .pipe(dest(`${PATH_TO_DIST}icons`));
+    .pipe(dest(`${PATH_TO_PUBLIC}icons`));
 }
 
-export function copyStatic () {
+export function copyStatic() {
   return src(PATHS_TO_STATIC, { base: PATH_TO_SOURCE })
-    .pipe(dest(PATH_TO_DIST));
+    .pipe(dest(PATH_TO_PUBLIC));
 }
 
-export function startServer () {
+export function startServer() {
   const serveStatic = PATHS_TO_STATIC
     .filter((path) => path.startsWith('!') === false)
     .map((path) => {
@@ -147,7 +147,7 @@ export function startServer () {
 
   server.init({
     server: {
-      baseDir: PATH_TO_DIST
+      baseDir: PATH_TO_PUBLIC
     },
     serveStatic,
     cors: true,
@@ -155,7 +155,7 @@ export function startServer () {
     ui: false,
   }, (err, bs) => {
     bs.addMiddleware('*', (req, res) => {
-      res.write(readFileSync(`${PATH_TO_DIST}404.html`));
+      res.write(readFileSync(`${PATH_TO_PUBLIC}404.html`));
       res.end();
     });
   });
@@ -167,20 +167,20 @@ export function startServer () {
   watch(PATHS_TO_STATIC, series(reloadServer));
 }
 
-function reloadServer (done) {
+function reloadServer(done) {
   server.reload();
   done();
 }
 
-export function removeBuild (done) {
-  rmSync(PATH_TO_DIST, {
+export function removeBuild(done) {
+  rmSync(PATH_TO_PUBLIC, {
     force: true,
     recursive: true,
   });
   done();
 }
 
-export function buildProd (done) {
+export function buildProd(done) {
   isDevelopment = false;
   series(
     removeBuild,
@@ -194,7 +194,7 @@ export function buildProd (done) {
   )(done);
 }
 
-export function runDev (done) {
+export function runDev(done) {
   series(
     removeBuild,
     parallel(
